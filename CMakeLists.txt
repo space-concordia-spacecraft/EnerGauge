@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.25)
 set(PICO_SDK_PATH $ENV{PICO_SDK_PATH})
 
 # Fetch dependencies
-IF(NOT PICO_SDK_PATH) # Only fetch if SDK is not already found on system
-    include(FetchContent)
+include(FetchContent)
 
+IF(NOT PICO_SDK_PATH) # Only fetch if SDK is not already found on system
     set(PICO_SDK_COMMIT 6a7db34ff63345a7badec79ebea3aaef1712f374) # Version 1.5.1
 
     FetchContent_Declare(PICO_SDK
@@ -36,4 +36,12 @@ pico_add_extra_outputs(i2c_bus_test)
 add_executable(spi_bus_test tests/spi_bus_test.c)
 target_link_libraries(spi_bus_test pico_stdlib hardware_spi)
 pico_add_extra_outputs(spi_bus_test)
+
+# Build main battery tester firmware
+include_directories(${PROJECT_SOURCE_DIR}/include/)
+file(GLOB_RECURSE ENERGAUGE_SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp" "${PROJECT_SOURCE_DIR}/include/*.h")
+
+add_executable(EnerGauge ${ENERGAUGE_SOURCE_FILES})
+target_link_libraries(EnerGauge pico_stdlib hardware_i2c hardware_spi)
+pico_add_extra_outputs(EnerGauge)
 
