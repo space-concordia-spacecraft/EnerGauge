@@ -22,16 +22,18 @@ project(sc_battery_test_jig CXX C ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
-# Build Pico test binaries
 pico_sdk_init()
 
-# blink test program
+# Build Pico test binaries
 add_executable(blink_test tests/blink_test.c)
 target_link_libraries(blink_test pico_stdlib)
 pico_add_extra_outputs(blink_test)
 
-# I2C test program
-add_executable(bus_test tests/bus_test.c)
-target_link_libraries(bus_test pico_stdlib hardware_i2c)
-pico_add_extra_outputs(bus_test)
+add_executable(i2c_bus_test tests/i2c_bus_test.c)
+target_link_libraries(i2c_bus_test pico_stdlib hardware_i2c)
+pico_add_extra_outputs(i2c_bus_test)
+
+add_executable(spi_bus_test tests/spi_bus_test.c)
+target_link_libraries(spi_bus_test pico_stdlib hardware_spi)
+pico_add_extra_outputs(spi_bus_test)
 
