@@ -24,6 +24,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 pico_sdk_init()
 
+# Recursively select all source files
+file(GLOB_RECURSE ENERGAUGE_SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp" "${PROJECT_SOURCE_DIR}/include/*.h")
+
 # Build Pico test binaries
 add_executable(blink_test tests/blink_test.c)
 target_link_libraries(blink_test pico_stdlib)
@@ -33,13 +36,12 @@ add_executable(i2c_bus_test tests/i2c_bus_test.c)
 target_link_libraries(i2c_bus_test pico_stdlib hardware_i2c)
 pico_add_extra_outputs(i2c_bus_test)
 
-add_executable(spi_bus_test tests/spi_bus_test.c)
-target_link_libraries(spi_bus_test pico_stdlib hardware_spi)
-pico_add_extra_outputs(spi_bus_test)
+add_executable(drive_display_test tests/drive_display_test.cpp ${ENERGAUGE_SOURCE_FILES})
+target_link_libraries(drive_display_test pico_stdlib)
+pico_add_extra_outputs(drive_display_test)
 
 # Build main battery tester firmware
 include_directories(${PROJECT_SOURCE_DIR}/include/)
-file(GLOB_RECURSE ENERGAUGE_SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp" "${PROJECT_SOURCE_DIR}/include/*.h")
 
 add_executable(EnerGauge ${ENERGAUGE_SOURCE_FILES})
 target_link_libraries(EnerGauge pico_stdlib hardware_i2c hardware_spi)
