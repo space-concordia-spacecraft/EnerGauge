@@ -12,7 +12,9 @@ IF(NOT PICO_SDK_PATH) # Only fetch if SDK is not already found on system
             GIT_REPOSITORY https://github.com/raspberrypi/pico-sdk
             GIT_TAG ${PICO_SDK_COMMIT})
     FetchContent_MakeAvailable(PICO_SDK)
-    set(PICO_SDK_PATH $ENV{PICO_SDK_PATH})
+    FetchContent_GetProperties(PICO_SDK SOURCE_DIR PICO_SDK_SOURCE_DIR)
+
+    set(PICO_SDK_PATH ${PICO_SDK_SOURCE_DIR})
 ENDIF()
 
 # Setup Project
