@@ -42,6 +42,12 @@ add_executable(drive_display_test tests/drive_display_test.cpp ${ENERGAUGE_SOURC
 target_link_libraries(drive_display_test pico_stdlib hardware_i2c)
 pico_add_extra_outputs(drive_display_test)
 
+add_executable(drive_keypad_test tests/drive_keypad_test.cpp ${ENERGAUGE_SOURCE_FILES})
+target_link_libraries(drive_keypad_test pico_stdlib hardware_i2c)
+pico_add_extra_outputs(drive_keypad_test)
+pico_enable_stdio_usb(drive_keypad_test 1)
+pico_enable_stdio_uart(drive_keypad_test 0)
+
 # Build main battery tester firmware
 include_directories(${PROJECT_SOURCE_DIR}/include/)
 
