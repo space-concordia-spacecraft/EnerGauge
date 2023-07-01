@@ -3,6 +3,7 @@
 //
 
 #include "interfaces/Display.h"
+#include "blink.h"
 
 // Example PICs
 unsigned char NHD_Logo [] = {
@@ -76,6 +77,8 @@ unsigned char FMRadio [] = {
 };
 
 int main() {
+    blink_init();
+
     Display display;
 
     while (1) {
@@ -88,5 +91,7 @@ int main() {
         sleep_ms(2000);
         display.clearDisplay();
         sleep_ms(500);
+
+        blink_led();
     }
 }

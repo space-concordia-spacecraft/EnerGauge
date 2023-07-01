@@ -39,7 +39,7 @@ target_link_libraries(i2c_bus_test pico_stdlib hardware_i2c)
 pico_add_extra_outputs(i2c_bus_test)
 
 add_executable(drive_display_test tests/drive_display_test.cpp ${ENERGAUGE_SOURCE_FILES})
-target_link_libraries(drive_display_test pico_stdlib)
+target_link_libraries(drive_display_test pico_stdlib hardware_i2c)
 pico_add_extra_outputs(drive_display_test)
 
 # Build main battery tester firmware
