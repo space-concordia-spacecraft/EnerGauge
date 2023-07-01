@@ -5,6 +5,16 @@ set(PICO_SDK_PATH $ENV{PICO_SDK_PATH})
 # Fetch dependencies
 include(FetchContent)
 
+set(NO_OS_FatFS_COMMIT 26c77f6d50fee3ac066423d7d67713005aeb0443) # Version 1.0.8
+
+FetchContent_Declare(NO_OS_FatFS
+        GIT_REPOSITORY https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico.git
+        GIT_TAG ${NO_OS_FatFS_COMMIT})
+FetchContent_MakeAvailable(NO_OS_FatFS)
+FetchContent_GetProperties(NO_OS_FatFS SOURCE_DIR NO_OS_FatFS_SOURCE_DIR)
+
+add_subdirectory(${NO_OS_FatFS_SOURCE_DIR}/FatFs_SPI build)
+
 IF(NOT PICO_SDK_PATH) # Only fetch if SDK is not already found on system
     set(PICO_SDK_COMMIT 6a7db34ff63345a7badec79ebea3aaef1712f374) # Version 1.5.1
 
@@ -35,15 +45,15 @@ target_link_libraries(blink_test pico_stdlib)
 pico_add_extra_outputs(blink_test)
 
 add_executable(i2c_bus_test tests/i2c_bus_test.c)
-target_link_libraries(i2c_bus_test pico_stdlib hardware_i2c)
+target_link_libraries(i2c_bus_test pico_stdlib hardware_i2c FatFs_SPI)
 pico_add_extra_outputs(i2c_bus_test)
 
 add_executable(drive_display_test tests/drive_display_test.cpp ${ENERGAUGE_SOURCE_FILES})
-target_link_libraries(drive_display_test pico_stdlib hardware_i2c)
+target_link_libraries(drive_display_test pico_stdlib hardware_i2c FatFs_SPI)
 pico_add_extra_outputs(drive_display_test)
 
 add_executable(drive_keypad_test tests/drive_keypad_test.cpp ${ENERGAUGE_SOURCE_FILES})
-target_link_libraries(drive_keypad_test pico_stdlib hardware_i2c)
+target_link_libraries(drive_keypad_test pico_stdlib hardware_i2c FatFs_SPI)
 pico_add_extra_outputs(drive_keypad_test)
 pico_enable_stdio_usb(drive_keypad_test 1)
 pico_enable_stdio_uart(drive_keypad_test 0)
@@ -52,6 +62,6 @@ pico_enable_stdio_uart(drive_keypad_test 0)
 include_directories(${PROJECT_SOURCE_DIR}/include/)
 
 add_executable(EnerGauge ${ENERGAUGE_SOURCE_FILES})
-target_link_libraries(EnerGauge pico_stdlib hardware_i2c hardware_spi)
+target_link_libraries(EnerGauge pico_stdlib hardware_i2c hardware_spi FatFs_SPI)
 pico_add_extra_outputs(EnerGauge)
 
